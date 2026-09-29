@@ -23,15 +23,20 @@ class JsonlFileProcessor:
 
 
 
-def scrub_event(_: Any, __: str, event_dict: dict[str, Any]) -> dict[str, Any]:
-    payload = event_dict.get("payload")
-    if isinstance(payload, dict):
-        event_dict["payload"] = {
-            k: scrub_text(v) if isinstance(v, str) else v for k, v in payload.items()
-        }
-    if "event" in event_dict and isinstance(event_dict["event"], str):
-        event_dict["event"] = scrub_text(event_dict["event"])
-    return event_dict
+def scrub_event(_: Any,__: str,event_dict: dict[str, Any],) -> dict[str, Any]:
+    def scrub_value(value: Any) -> Any:
+        if isinstance(value, str):
+            return scrub_text(value)
+        if isinstance(value, dict):
+            return {
+                key: scrub_value(item)
+                for key, item in value.items()
+            }
+        if isinstance(value, (list, tuple)):
+            return [scrub_value(item) for item in value]
+        return value
+
+    return scrub_value(event_dict)
 
 
 
@@ -46,6 +51,7 @@ def configure_logging() -> None:
             # scrub_event,
             structlog.processors.StackInfoRenderer(),
             structlog.processors.format_exc_info,
+            scrub_event,
             JsonlFileProcessor(),
             structlog.processors.JSONRenderer(),
         ],

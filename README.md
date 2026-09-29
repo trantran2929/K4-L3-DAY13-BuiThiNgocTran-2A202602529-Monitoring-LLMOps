@@ -85,6 +85,52 @@ python -m pytest -q
 
 Baseline log chưa đạt là bình thường vì các `TODO` của CP1 chưa được làm. Ghi lại kết quả baseline vào `submission/REPORT.md` trước khi sửa.
 
+## Chạy dashboard
+
+Chạy các lệnh từ thư mục gốc repository. Trong mỗi terminal PowerShell,
+kích hoạt môi trường bằng `.\.venv\Scripts\Activate.ps1`.
+
+Cài dependencies cho dashboard (file này bao gồm cả `requirements.txt`):
+
+```powershell
+python -m pip install -r requirements-dashboard.txt
+```
+
+Terminal 1 — khởi động API với cấu hình `.env`, rồi giữ terminal chạy.
+Nếu API đã chạy tại cổng 8000 thì dùng tiến trình hiện có:
+
+```powershell
+python -m uvicorn app.main:app --env-file .env
+```
+
+Terminal 2 — tạo dữ liệu mẫu, sau đó khởi động dashboard:
+
+```powershell
+python scripts/load_test.py
+python -m streamlit run scripts/dashboard.py
+```
+
+Mở **http://localhost:8501**. Dashboard đọc `data/logs.jsonl`, hiển thị
+**60 phút gần nhất** theo UTC và tự làm mới mỗi **30 giây**. Sáu panel gồm
+latency/TTFT, traffic, errors/retrieval success, cost, tokens và quality;
+mỗi panel có đơn vị và đường threshold theo `config/dashboard.yaml`.
+Usage/cost là mô phỏng và quality là heuristic của lab.
+
+Nếu dashboard chưa có dữ liệu, giữ API chạy và mở terminal thứ ba để chạy lại
+`python scripts/load_test.py`, rồi bấm **Làm mới** trên dashboard. Log cũ hơn
+60 phút không xuất hiện trong cửa sổ hiện tại.
+
+Kiểm tra contract bằng:
+
+```powershell
+python scripts/validate_dashboard.py
+```
+
+Kết quả mong đợi là `HỢP LỆ: 6/6 panel có trong dashboard contract.`
+Validator kiểm tra YAML; evidence runtime vẫn cần ảnh đủ sáu panel có dữ liệu,
+time range, đơn vị và threshold. Lưu ảnh tại
+`submission/evidence/11-dashboard-overview.png`.
+
 ## Lộ trình 14:00–18:00 (240 phút)
 
 | Mốc | Thời gian | Việc chính | Hoàn thành khi |

@@ -7,7 +7,12 @@ primary_slo:
     total_event: 'event == "request_received"'
   target_percent: 99.5
   error_budget_percent: 0.5
-  note: Học viên phải giải thích hoặc điều chỉnh ngưỡng bằng baseline của mình.
+  note: >
+    Mục tiêu là 99.5% request thành công trong tối đa 3000 ms,
+    đánh giá trên cửa sổ 28 ngày. Baseline lab gồm 10 request
+    có P95 705.2 ms và TTFT P95 50 ms.
+    Giữ ngưỡng 3000 ms để có khoảng dự phòng so với baseline.
+    Mẫu lab nhỏ chưa đủ chứng minh đạt SLO trong 28 ngày.
 guardrails:
   error_rate_pct_max: 2
   daily_cost_usd_max: 2.5

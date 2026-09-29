@@ -1,25 +1,33 @@
 alerts:
-  - name: TODO_alert_1
-    severity: TODO
-    condition: TODO
-    duration: TODO
+  - name: high_response_latency
+    severity: warning
+    condition: >
+      Trong cửa sổ 5 phút, có ít nhất 20 response_sent
+      và P95(latency_ms) > 3000.
+    duration: 5m
     type: symptom-based
-    channel: slack
-    owner: TODO
+    channel: "slack:#day13-alerts"
+    owner: Bui Thi Ngoc Tran
     runbook: docs/alerts.md#alert-1
-  - name: TODO_alert_2
-    severity: TODO
-    condition: TODO
-    duration: TODO
+
+  - name: high_request_error_rate
+    severity: critical
+    condition: >
+      Trong cửa sổ 5 phút, có ít nhất 20 request_received
+      và 100 * count(request_failed) / count(request_received) > 2.
+    duration: 5m
     type: symptom-based
-    channel: slack
-    owner: TODO
+    channel: "slack:#day13-alerts"
+    owner: Bui Thi Ngoc Tran
     runbook: docs/alerts.md#alert-2
-  - name: TODO_alert_3
-    severity: TODO
-    condition: TODO
-    duration: TODO
+
+  - name: low_response_quality
+    severity: warning
+    condition: >
+      Trong cửa sổ 10 phút, có ít nhất 20 response_sent
+      có quality_score và mean(quality_score) < 0.75.
+    duration: 10m
     type: symptom-based
-    channel: slack
-    owner: TODO
+    channel: "slack:#day13-alerts"
+    owner: Bui Thi Ngoc Tran
     runbook: docs/alerts.md#alert-3

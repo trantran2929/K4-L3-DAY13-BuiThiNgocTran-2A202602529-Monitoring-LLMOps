@@ -8,7 +8,7 @@
 - **MSSV:** 2A202602529
 - **Lớp:** K4-L3A
 - **Repository URL:**https://github.com/trantran2929/K4-L3-DAY13-BuiThiNgocTran-2A202602529-Monitoring-LLMOps
-- **Commit SHA cuối:**
+- **Commit SHA cuối:** 46567f628da9d21c8a814095dabeecd56868f54a
 - **Challenge ID:** day13-k4-l3a-monitoring-llmops-v1
 - **Tên project Langfuse cá nhân:** `day13-k4-l3a-2a202602529`
 
